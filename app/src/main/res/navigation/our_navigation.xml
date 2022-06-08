@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/our_navigation"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/fragmentHome"
+        android:name="com.example.sesuperproject.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/balanceFragment"
+        android:name="com.example.sesuperproject.fragments.BalanceFragment"
+        android:label="fragment_balance"
+        tools:layout="@layout/fragment_balance" />
+    <fragment
+        android:id="@+id/payFragment"
+        android:name="com.example.sesuperproject.fragments.PayFragment"
+        android:label="fragment_pay"
+        tools:layout="@layout/fragment_pay" >
+        <action
+            android:id="@+id/toFragmentPaymentDetail"
+            app:destination="@id/payDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.sesuperproject.fragments.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/toFragmentLogin"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.sesuperproject.fragments.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/toFragmentHome"
+            app:destination="@id/fragmentHome" />
+    </fragment>
+    <fragment
+        android:id="@+id/payDetailFragment"
+        android:name="com.example.sesuperproject.fragments.PayDetailFragment"
+        android:label="fragment_pay_detail"
+        tools:layout="@layout/fragment_pay_detail" >
+        <action
+            android:id="@+id/toPayFragment"
+            app:destination="@id/payFragment" />
+    </fragment>
+
+</navigation>

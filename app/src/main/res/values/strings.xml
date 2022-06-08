@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">SE Super Project</string>
+
+    <string name="email_prompt">Email</string>
+    <string name="password_prompt">Password</string>
+    <string name="login">Login</string>
+
+    <string name="home_title">Home</string>
+    <string name="balance_title">Balance</string>
+    <string name="pay_title">Pay</string>
+    <string name="profile_title">Profile</string>
+
+    <string name="welcome_user">Welcome,</string>
+    <string name="user_id">0123456789</string>
+    <string name="report_title">Your Monthly Report</string>
+    <string name="income_label">Income:</string>
+    <string name="outcome_label">Outcome:</string>
+    <string name="status_label">Status:</string>
+    <string name="progress_title">Progress:</string>
+    <string name="encouragement">Get the Title!</string>
+    <string name="progress">% Completed</string>
+
+    <string name="username">Username</string>
+    <string name="balance_label">Balance:</string>
+    <string name="balance">Balance amount</string>
+    <string name="next_target_title">Next Target:</string>
+    <string name="next_target_amount">Next target amount</string>
+
+    <string name="next_title_1">Next title 1</string>
+    <string name="next_title_2">Next title 2</string>
+    <string name="next_title_3">Next title 3</string>
+    <string name="next_title_4">Next title 4</string>
+
+    <string name="payment_request_title">Payment Request:</string>
+    <string name="transaction_id_label">Transaction Id</string>
+
+    <string name="payment_request_amount">Rp</string>
+    <string name="store">from</string>
+    <string name="detail_label">Details provided below</string>
+    <string name="product_name">product name</string>
+    <string name="product_qty">1</string>
+    <string name="product_price">10.000</string>
+    <string name="total_label">Total</string>
+    <string name="total_amount">10.000</string>
+    <string name="balance_before_label">Balance Before:</string>
+    <string name="balance_before">50.000</string>
+    <string name="balance_diff">-10.000</string>
+    <string name="balance_after_label">Balance After:</string>
+    <string name="balance_final">40.000</string>
+
+    <string name="student_email">Email:</string>
+    <string name="student_id">Student ID:</string>
+    <string name="student_class">Class:</string>
+    <string name="student_seat">Seat Number:</string>
+    <string name="logout">Logout</string>
+    <string name="title_label">Titles</string>
+    <string name="dialogue_confirmation">Are you sure you want to logout?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+</resources>
