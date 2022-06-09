@@ -1,9 +1,6 @@
 package com.example.sesuperproject.api
 
-import com.example.sesuperproject.models.Item
-import com.example.sesuperproject.models.TransactionDetail
-import com.example.sesuperproject.models.TransactionHeader
-import com.example.sesuperproject.models.User
+import com.example.sesuperproject.models.*
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -20,11 +17,17 @@ interface RetrofitInterface {
     @GET("/th/{id}")
     fun getTransactionHeader(@Path("id") transactionId: Int): Call<TransactionHeader>
 
+    @GET("/canteens/{id}")
+    fun getStoreDetail(@Path("id") canteenId: Int): Call<Store>
+
     @GET("/td/{id}")
     fun getTransactionDetail(@Path("id") transactionId: Int): Call<List<TransactionDetail>>
 
     @GET("/it/{id}")
     fun getItemDetail(@Path("id") itemId: Int): Call<Item>
+
+    @POST("/pay")
+    fun payTransaction(@Body map: HashMap<String, Int>): Call<Void>
 
     companion object{
         private const val BASE_URL = "http://10.0.2.2:8000"

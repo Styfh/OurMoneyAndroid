@@ -43,7 +43,7 @@ class PayFragment : Fragment() {
                     response: Response<TransactionHeader>
                 ) {
 
-                    if(response.code() == 200){
+                    if(response.code() == 200 && response.body()!!.payed == 0){
                         (activity as MainActivity).currentTransactionHeader = response.body()!!
 
                         val payDetailFragment = PayDetailFragment()

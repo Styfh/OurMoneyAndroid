@@ -17,6 +17,7 @@ import com.example.sesuperproject.api.RetrofitInterface
 import com.example.sesuperproject.models.Item
 import com.example.sesuperproject.models.TransactionDetail
 import kotlinx.coroutines.*
+import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,59 +34,6 @@ class PayDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        val callGetDetail = retrofitInterface.getTransactionDetail(transactionId)
-//
-//        callGetDetail.enqueue(object: Callback<List<TransactionDetail>> {
-//            override fun onResponse(
-//                call: Call<List<TransactionDetail>>,
-//                responses: Response<List<TransactionDetail>>
-//            ) {
-//
-//                if(responses.code() == 200){
-//                    Log.d("response", responses.body().toString())
-//
-//                    currDetail = responses.body()!!
-//
-//                    for(item in currDetail){
-//
-//                        var callGetItem = retrofitInterface.getItemDetail(item.itemId)
-//
-//                        callGetItem.enqueue(object: Callback<Item>{
-//
-//                            override fun onResponse(call: Call<Item>, response: Response<Item>) {
-//                                Log.d("response", response.body().toString())
-//
-//                                currList.add(response.body()!!)
-//                                paymentTotal += response.body()!!.itemPrice
-//
-//                                adapter.notifyDataSetChanged()
-//                            }
-//
-//                            override fun onFailure(call: Call<Item>, t: Throwable) {
-//                                Toast.makeText(requireActivity() ,t.message, Toast.LENGTH_LONG)
-//                            }
-//
-//                        })
-//
-//                    }
-//
-//                    Log.d("local_data", responses.body()!!.toMutableList().toString())
-//
-//                } else if(responses.code() == 404){
-//                    Toast.makeText(requireActivity(), "Detail not found. Returning to pay page.", Toast.LENGTH_LONG)
-//                    parentFragmentManager.beginTransaction()
-//                        .replace(R.id.fragmentContainerView, payFragment)
-//                        .commit()
-//                }
-//
-//            }
-//
-//            override fun onFailure(call: Call<List<TransactionDetail>>, t: Throwable) {
-//                Toast.makeText(requireActivity(), t.message, Toast.LENGTH_LONG)
-//            }
-//
-//        })
-
     }
 
     override fun onCreateView(
@@ -96,19 +44,68 @@ class PayDetailFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_pay_detail, container, false)
 
         val transactionId = (activity as MainActivity).currentTransactionHeader.transactionId
+        val storeId = (activity as MainActivity).currentTransactionHeader.transactionCanteenId
 
         val retrofitInterface = RetrofitInterface.create()
 
+        val currBalance = (activity as MainActivity).loggedInUser.user_balance
+        val currBalanceTxt = view.findViewById<TextView>(R.id.currBalance)
         val headerPrice = view.findViewById<TextView>(R.id.total_price)
+
         headerPrice.text = "Rp. " + paymentTotal.toString()
+        currBalanceTxt.text = currBalance.toString()
 
         val storeName = view.findViewById<TextView>(R.id.cardStoreName)
 
+        GlobalScope.launch (Dispatchers.IO) {
+
+            val storeResponse = retrofitInterface.getStoreDetail(storeId).awaitResponse()
+
+            if(storeResponse.isSuccessful){
+                withContext(Dispatchers.Main){
+                    storeName.text = storeResponse.body()!!.canteenName
+                }
+            }
+
+        }
+
         val payBtn = view.findViewById<Button>(R.id.payBtn)
         payBtn.setOnClickListener{
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, payFragment)
-                .commit()
+
+            if(paymentTotal in 1 until currBalance){
+
+                GlobalScope.launch (Dispatchers.IO){
+
+                    var map = HashMap<String, Int>()
+                    map["trans_id"] = transactionId
+                    map["new_balance"] = (currBalance - paymentTotal)
+                    map["user_id"] = (activity as MainActivity).loggedInUser.user_id
+
+                    Log.d("local_data", map.toString())
+
+                    val paymentResponse = retrofitInterface.payTransaction(map).awaitResponse()
+
+                    withContext(Dispatchers.Main){
+                        if(paymentResponse.isSuccessful){
+                            Toast.makeText(requireContext(), "Payment Successful", Toast.LENGTH_LONG).show()
+
+                            (activity as MainActivity).loggedInUser.user_balance -= paymentTotal
+
+                            parentFragmentManager.beginTransaction()
+                                .replace(R.id.fragmentContainerView, payFragment)
+                                .commit()
+                        } else{
+                            Toast.makeText(requireContext(), paymentResponse.errorBody().toString(), Toast.LENGTH_LONG).show()
+                        }
+
+                    }
+
+                }
+            } else{
+                Toast.makeText(requireContext(), "Not enough balance", Toast.LENGTH_LONG)
+            }
+
+
         }
 
         GlobalScope.launch (Dispatchers.IO){
@@ -140,7 +137,14 @@ class PayDetailFragment : Fragment() {
                                     it.notifyDataSetChanged()
                                 }
                                 val lblTotalPrice = view.findViewById<TextView>(R.id.total_price)
+                                val diff = view.findViewById<TextView>(R.id.diff)
+                                val balanceAfterTxt = view.findViewById<TextView>(R.id.balanceAfter)
+
+                                val balanceAfter = (activity as MainActivity).loggedInUser.user_balance - paymentTotal
+
                                 lblTotalPrice.text = "Rp. " + paymentTotal.toString()
+                                diff.text = "-" + paymentTotal.toString()
+                                balanceAfterTxt.text = balanceAfter.toString()
                             }
                         }
                     }

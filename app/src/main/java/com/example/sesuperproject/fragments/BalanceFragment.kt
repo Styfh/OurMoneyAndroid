@@ -33,9 +33,11 @@ class BalanceFragment : Fragment() {
 
         val username = view.findViewById<TextView>(R.id.header_username)
         val userId = view.findViewById<TextView>(R.id.header_userId)
+        val currBalanceTxt = view.findViewById<TextView>(R.id.balanceAmount)
 
         username.text = user.full_name
         userId.text = user.user_id.toString()
+        currBalanceTxt.text = "Rp. " + user.user_balance.toString()
     }
 
 

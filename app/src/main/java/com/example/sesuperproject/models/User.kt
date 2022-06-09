@@ -10,5 +10,6 @@ data class User(
     var student_id: String,
     @SerializedName("class")
     var class_code: String,
-    var absent_number: Int
+    var absent_number: Int,
+    var user_balance: Int
     )
