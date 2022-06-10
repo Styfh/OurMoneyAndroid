@@ -48,10 +48,10 @@ class ProfileFragment : Fragment() {
 
         studentName.text = user.full_name
         studentId.text = user.user_id.toString()
-        studentEmail.text = user.email
-        studentStudentId.text = user.student_id
-        studentClass.text = user.class_code
-        studentSeat.text = user.absent_number.toString()
+        studentEmail.text = studentEmail.text.toString() + " " + user.email
+        studentStudentId.text = studentStudentId.text.toString() + " " + user.student_id
+        studentClass.text = studentClass.text.toString() + " " + user.class_code
+        studentSeat.text = studentSeat.text.toString() + " " + user.absent_number.toString()
 
     }
 }

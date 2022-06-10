@@ -29,6 +29,12 @@ interface RetrofitInterface {
     @POST("/pay")
     fun payTransaction(@Body map: HashMap<String, Int>): Call<Void>
 
+    @GET("/income/{id}")
+    fun getIncome(@Path("id") userId: Int): Call<List<Topup>>
+
+    @GET("/outcome/{id}")
+    fun getOutcome(@Path("id") userId: Int): Call<List<TransactionHeader>>
+
     companion object{
         private const val BASE_URL = "http://10.0.2.2:8000"
 
