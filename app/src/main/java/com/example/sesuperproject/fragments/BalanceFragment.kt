@@ -1,15 +1,19 @@
 package com.example.sesuperproject.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import com.example.sesuperproject.MainActivity
 import com.example.sesuperproject.R
 import com.example.sesuperproject.api.RetrofitInterface
 import com.example.sesuperproject.models.Title
+import com.example.sesuperproject.models.User
 import com.example.sesuperproject.models.UserTitle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
@@ -21,8 +25,10 @@ import retrofit2.awaitResponse
 
 class BalanceFragment : Fragment() {
 
+    val TAG = "balance_fragment"
+
     lateinit var equippedTitle: UserTitle
-    var lockedTitles = emptyList<Title>()
+    var lockedTitles = mutableListOf<Title>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,41 +40,32 @@ class BalanceFragment : Fragment() {
         val botNav = requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
         botNav.visibility = View.VISIBLE
 
-        val titleView = view.findViewById<TextView>(R.id.header_userTitle)
-        val nextTitleAmountView = view.findViewById<TextView>(R.id.nextTitleTarget)
+        val unlockCardView = view.findViewById<CardView>(R.id.cardViewProgress)
 
-        val userId = (activity as MainActivity).loggedInUser.user_id
+        val user = (activity as MainActivity).loggedInUser
 
         val retrofitInterface = RetrofitInterface.create()
 
-        GlobalScope.launch(Dispatchers.IO){
+        updateEquippedTitle(view, retrofitInterface, user)
 
-            val equippedTitleCall = retrofitInterface.getEquippedTitle(userId).awaitResponse()
+        unlockCardView.setOnClickListener{
+            if(lockedTitles[0] != null){
+                if(user.user_balance >= lockedTitles[0].pointRequirement){
 
-            if(equippedTitleCall.isSuccessful){
-                equippedTitle = equippedTitleCall.body()!!
+                    var param = HashMap<String, Int>()
+                    param["user_id"] = user.user_id
+                    param["title_id"] = lockedTitles[0].titleId
 
-                val equippedTitleDetailCall = retrofitInterface.getTitleDetails(equippedTitle.titleId).awaitResponse()
-                if(equippedTitleDetailCall.isSuccessful){
-                    val equippedTitleDetail = equippedTitleDetailCall.body()!!
+                    GlobalScope.launch(Dispatchers.IO) {
+                        val unlockTitleCall = retrofitInterface.unlockTitle(param).awaitResponse()
 
-                    val lockedTitleCall = retrofitInterface.getLockedTitles(equippedTitle.titleId).awaitResponse()
-                    if(lockedTitleCall.isSuccessful){
-                        lockedTitles = lockedTitleCall.body()!!
-
-                        withContext(Dispatchers.Main){
-                            nextTitleAmountView.text = "Rp. " + lockedTitles[0].pointRequirement
+                        if(unlockTitleCall.isSuccessful){
+                            lockedTitles.removeFirst()
+                            updateEquippedTitle(view, retrofitInterface, user)
                         }
                     }
-
-                    withContext(Dispatchers.Main){
-                        titleView.text = equippedTitleDetail.titleName
-                    }
-
                 }
             }
-
-
         }
 
         return view
@@ -86,6 +83,52 @@ class BalanceFragment : Fragment() {
         username.text = user.full_name
         userId.text = user.user_id.toString()
         currBalanceTxt.text = "Rp. " + user.user_balance.toString()
+
+
+    }
+
+    private fun updateEquippedTitle(view: View, retrofitInterface: RetrofitInterface, user: User){
+        val titleView = view.findViewById<TextView>(R.id.header_userTitle)
+        val nextTitleAmountView = view.findViewById<TextView>(R.id.nextTitleTarget)
+
+        GlobalScope.launch(Dispatchers.IO){
+            val equippedTitleCall = retrofitInterface.getEquippedTitle(user.user_id).awaitResponse()
+
+            if(equippedTitleCall.isSuccessful){
+                equippedTitle = equippedTitleCall.body()!!
+
+                val equippedTitleDetailCall = retrofitInterface.getTitleDetails(equippedTitle.titleId).awaitResponse()
+                if(equippedTitleDetailCall.isSuccessful){
+                    val equippedTitleDetail = equippedTitleDetailCall.body()!!
+
+                    val lockedTitleCall = retrofitInterface.getLockedTitles(equippedTitle.titleId).awaitResponse()
+                    if(lockedTitleCall.isSuccessful){
+                        lockedTitles = lockedTitleCall.body()!!
+
+                        withContext(Dispatchers.Main){
+                            nextTitleAmountView.text = "Rp. " + lockedTitles[0].pointRequirement
+                            updateProgressBar(view, user)
+                        }
+                    }
+
+                    withContext(Dispatchers.Main){
+                        titleView.text = equippedTitleDetail.titleName
+                    }
+
+                }
+            }
+        }
+    }
+
+    private fun updateProgressBar(view: View, user:User){
+        val progressBar = view.findViewById<ProgressBar>(R.id.rewardProgress)
+
+        var progress: Float = user.user_balance.toFloat() / lockedTitles[0].pointRequirement
+        progressBar.max = 100;
+
+        Log.d(TAG, ((progress * 100).toString()))
+
+        progressBar.setProgress((progress * 100).toInt())
     }
 
 

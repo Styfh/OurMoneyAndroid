@@ -39,10 +39,13 @@ interface RetrofitInterface {
     fun getEquippedTitle(@Path("id") userId: Int): Call<UserTitle>
 
     @GET("/title/locked/{id}")
-    fun getLockedTitles(@Path("id") titleId: Int): Call<List<Title>>
+    fun getLockedTitles(@Path("id") titleId: Int): Call<MutableList<Title>>
 
     @GET("/title/{id}")
     fun getTitleDetails(@Path("id") titleId: Int): Call<Title>
+
+    @POST("/title/unlock")
+    fun unlockTitle(@Body map: HashMap<String, Int>): Call<Void>
 
     companion object{
         private const val BASE_URL = "http://10.0.2.2:8000"
