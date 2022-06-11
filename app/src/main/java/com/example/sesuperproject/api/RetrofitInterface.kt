@@ -35,6 +35,15 @@ interface RetrofitInterface {
     @GET("/outcome/{id}")
     fun getOutcome(@Path("id") userId: Int): Call<List<TransactionHeader>>
 
+    @GET("/title/equipped/{id}")
+    fun getEquippedTitle(@Path("id") userId: Int): Call<UserTitle>
+
+    @GET("/title/locked/{id}")
+    fun getLockedTitles(@Path("id") titleId: Int): Call<List<Title>>
+
+    @GET("/title/{id}")
+    fun getTitleDetails(@Path("id") titleId: Int): Call<Title>
+
     companion object{
         private const val BASE_URL = "http://10.0.2.2:8000"
 

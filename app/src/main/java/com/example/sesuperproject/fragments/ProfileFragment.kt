@@ -40,7 +40,7 @@ class ProfileFragment : Fragment() {
         val user = (activity as MainActivity).loggedInUser
 
         val studentName = view.findViewById<TextView>(R.id.header_username)
-        val studentId = view.findViewById<TextView>(R.id.header_userId)
+        val studentId = view.findViewById<TextView>(R.id.header_userTitle)
         val studentEmail = view.findViewById<TextView>(R.id.cardStudentEmail)
         val studentStudentId = view.findViewById<TextView>(R.id.cardStudentId)
         val studentClass = view.findViewById<TextView>(R.id.cardStudentClass)
