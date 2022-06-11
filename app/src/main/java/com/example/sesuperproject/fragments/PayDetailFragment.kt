@@ -15,6 +15,7 @@ import com.example.sesuperproject.MainActivity
 import com.example.sesuperproject.R
 import com.example.sesuperproject.api.RetrofitInterface
 import com.example.sesuperproject.models.Item
+import com.example.sesuperproject.models.ProductListAdapter
 import com.example.sesuperproject.models.TransactionDetail
 import kotlinx.coroutines.*
 import org.w3c.dom.Text
@@ -104,7 +105,6 @@ class PayDetailFragment : Fragment() {
             } else{
                 Toast.makeText(requireContext(), "Not enough balance", Toast.LENGTH_LONG)
             }
-
 
         }
 

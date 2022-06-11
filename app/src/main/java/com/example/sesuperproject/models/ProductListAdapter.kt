@@ -1,4 +1,4 @@
-package com.example.sesuperproject.fragments
+package com.example.sesuperproject.models
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sesuperproject.R
-import com.example.sesuperproject.models.Item
-import com.example.sesuperproject.models.TransactionDetail
 
 class ProductListAdapter (private val itemData: List<Item>, private val detailData: List<TransactionDetail>) : RecyclerView.Adapter<ProductListAdapter.ViewHolder>(){
 

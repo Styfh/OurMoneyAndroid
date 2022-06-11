@@ -9,12 +9,12 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.sesuperproject.MainActivity
 import com.example.sesuperproject.R
 import com.example.sesuperproject.api.RetrofitInterface
-import com.example.sesuperproject.models.Title
-import com.example.sesuperproject.models.User
-import com.example.sesuperproject.models.UserTitle
+import com.example.sesuperproject.models.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -29,6 +29,8 @@ class BalanceFragment : Fragment() {
 
     lateinit var equippedTitle: UserTitle
     var lockedTitles = mutableListOf<Title>()
+
+    lateinit var adapter: NextTitleListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,8 +85,6 @@ class BalanceFragment : Fragment() {
         username.text = user.full_name
         userId.text = user.user_id.toString()
         currBalanceTxt.text = "Rp. " + user.user_balance.toString()
-
-
     }
 
     private fun updateEquippedTitle(view: View, retrofitInterface: RetrofitInterface, user: User){
@@ -106,6 +106,21 @@ class BalanceFragment : Fragment() {
                         lockedTitles = lockedTitleCall.body()!!
 
                         withContext(Dispatchers.Main){
+                            val recyclerView = view.findViewById<RecyclerView>(R.id.nextTitleView)
+
+                            var n = 4
+                            if(lockedTitles.size < n)
+                                n = lockedTitles.size
+
+                            adapter = NextTitleListAdapter(lockedTitles.subList(0, n))
+                            recyclerView.adapter = adapter
+                            val nonScrollableLayoutManager = object : LinearLayoutManager(requireContext()){
+                                override fun canScrollVertically(): Boolean {
+                                    return false
+                                }
+                            }
+                            recyclerView.layoutManager = nonScrollableLayoutManager
+
                             nextTitleAmountView.text = "Rp. " + lockedTitles[0].pointRequirement
                             updateProgressBar(view, user)
                         }
