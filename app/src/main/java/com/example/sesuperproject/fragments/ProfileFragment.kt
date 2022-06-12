@@ -27,9 +27,17 @@ class ProfileFragment : Fragment() {
         val logoutDialogueFragment = LogoutDialogueFragment()
 
         val logoutBtn = view.findViewById<Button>(R.id.logoutBtn)
+        val titleBtn = view.findViewById<Button>(R.id.titleBtn)
+
         logoutBtn.setOnClickListener{
             logoutDialogueFragment.show(parentFragmentManager, "customDialog")
         }
+
+        titleBtn.setOnClickListener{
+            parentFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, BalanceFragment())
+                .commit()
+        }
+
 
         return view
     }

@@ -121,8 +121,11 @@ class BalanceFragment : Fragment() {
                             }
                             recyclerView.layoutManager = nonScrollableLayoutManager
 
-                            nextTitleAmountView.text = "Rp. " + lockedTitles[0].pointRequirement
-                            updateProgressBar(view, user)
+                            if(lockedTitles.isNotEmpty()){
+                                nextTitleAmountView.text = "Rp. " + lockedTitles[0].pointRequirement
+                                updateProgressBar(view, user)
+                            }
+
                         }
                     }
 
@@ -137,13 +140,13 @@ class BalanceFragment : Fragment() {
 
     private fun updateProgressBar(view: View, user:User){
         val progressBar = view.findViewById<ProgressBar>(R.id.rewardProgress)
+        val percentView = view.findViewById<TextView>(R.id.progressViewPercent)
 
-        var progress: Float = user.user_balance.toFloat() / lockedTitles[0].pointRequirement
+        var progress: Float = (user.user_balance.toFloat() / lockedTitles[0].pointRequirement) * 100
         progressBar.max = 100;
 
-        Log.d(TAG, ((progress * 100).toString()))
-
-        progressBar.setProgress((progress * 100).toInt())
+        percentView.text = String.format("%.1f", progress) + "% completed"
+        progressBar.setProgress(progress.toInt())
     }
 
 

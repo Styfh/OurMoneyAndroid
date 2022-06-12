@@ -127,6 +127,7 @@
         android:drawableLeft="@drawable/logout_edited"/>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/titleBtn"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
