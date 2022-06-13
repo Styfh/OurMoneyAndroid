@@ -25,7 +25,7 @@
         android:id="@+id/inputEmail"
         android:layout_width="272dp"
         android:layout_height="41dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,11 +37,10 @@
         android:id="@+id/inputEmailPrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="112dp"
         android:text="@string/email_prompt"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.201"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
@@ -60,11 +59,11 @@
         android:id="@+id/inputPassword"
         android:layout_width="272dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputPasswordPrompt" />
 
@@ -72,13 +71,12 @@
         android:id="@+id/inputPasswordPrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="24dp"
         android:text="@string/password_prompt"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputEmail"/>
+        app:layout_constraintTop_toBottomOf="@id/inputEmail" />
 
     <View
         android:id="@+id/rectangle_1"

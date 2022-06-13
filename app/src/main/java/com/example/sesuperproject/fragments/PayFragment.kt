@@ -26,6 +26,8 @@ class PayFragment : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_pay, container, false)
 
+        val user = (activity as MainActivity).loggedInUser
+
         val botNav = requireActivity().findViewById<BottomNavigationView>(R.id.navigation)
         botNav.visibility = View.VISIBLE
 
@@ -43,7 +45,13 @@ class PayFragment : Fragment() {
                     response: Response<TransactionHeader>
                 ) {
 
-                    if(response.code() == 200 && response.body()!!.payed == 0){
+                    if(response.code() == 204){
+                        Toast.makeText(requireContext(), "Transaction does not exist", Toast.LENGTH_LONG).show()
+                    } else if(response.body()!!.payed == 1){
+                        Toast.makeText(requireContext(), "Transaction was already paid", Toast.LENGTH_LONG).show()
+                    } else if(response.body()!!.transactionUserId != user.user_id){
+                        Toast.makeText(requireContext(), "This transaction belongs to another user", Toast.LENGTH_LONG).show()
+                    } else if(response.code() == 200){
                         (activity as MainActivity).currentTransactionHeader = response.body()!!
 
                         val payDetailFragment = PayDetailFragment()
@@ -52,10 +60,6 @@ class PayFragment : Fragment() {
                             .replace(R.id.fragmentContainerView, payDetailFragment)
                             .commit()
 
-                    } else if(response.code() == 204){
-                        Toast.makeText(requireContext(), "Transaction does not exist", Toast.LENGTH_LONG).show()
-                    } else if(response.body()!!.payed == 1){
-                        Toast.makeText(requireContext(), "Transaction was already paid", Toast.LENGTH_LONG).show()
                     }
 
                 }
