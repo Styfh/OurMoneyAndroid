@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/product_name"/>
+        android:text="@string/product_name"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/lblProductQty"
@@ -20,7 +21,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/product_qty"/>
+        android:text="@string/product_qty"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/lblProductPrice"
@@ -28,5 +30,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/product_price"/>
+        android:text="@string/product_price"
+        android:textColor="@color/black"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

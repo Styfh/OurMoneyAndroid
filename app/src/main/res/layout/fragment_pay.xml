@@ -25,6 +25,8 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="64dp"
         android:text="@string/payment_request_title"
+        android:textSize="24sp"
+        android:textColor="#794C8E"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,6 +37,7 @@
         android:layout_marginStart="48dp"
         android:layout_marginTop="24dp"
         android:text="@string/transaction_id_label"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 

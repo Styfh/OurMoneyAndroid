@@ -40,19 +40,13 @@ class HomeFragment : Fragment() {
 
         var incomeTotal = 0
         var outcomeTotal = 0
-        var diff = 0f
 
         val user = (activity as MainActivity).loggedInUser
         val userId = (activity as MainActivity).loggedInUser.user_id
 
-        val incomeView = view.findViewById<TextView>(R.id.income)
-        val outcomeView = view.findViewById<TextView>(R.id.outcome)
-        val statusView = view.findViewById<TextView>(R.id.status)
         val rewardView = view.findViewById<CardView>(R.id.cardViewProgress)
 
-        incomeView.text = incomeView.text.toString() + " Rp. 0"
-        outcomeView.text = outcomeView.text.toString() + " Rp. 0"
-        statusView.text = statusView.text.toString() + " 0"
+        updateData(view, incomeTotal, outcomeTotal, 0f)
 
         GlobalScope.launch(Dispatchers.IO){
 
@@ -63,12 +57,9 @@ class HomeFragment : Fragment() {
                 if (incomeList != null) {
                     for(income in incomeList){
                         incomeTotal += income.amount
-                        diff = (incomeTotal - outcomeTotal).toFloat()
-                        val status = (diff / incomeTotal) * 100
 
                         withContext(Dispatchers.Main){
-                            incomeView.text = "Income: Rp. " + incomeTotal
-                            statusView.text = "Status: " + String.format("%.1f", status) + "%"
+                            updateData(view, incomeTotal, outcomeTotal, calcStatus(incomeTotal, outcomeTotal))
                         }
                     }
                 } else{
@@ -99,12 +90,9 @@ class HomeFragment : Fragment() {
                                             if(itemDetailCall.isSuccessful){
                                                 if(itemDetail != null){
                                                     outcomeTotal += (itemDetail.itemPrice * detail.quantity)
-                                                    diff = (incomeTotal - outcomeTotal).toFloat()
-                                                    val status = (diff / incomeTotal) * 100
 
                                                     withContext(Dispatchers.Main){
-                                                        outcomeView.text = "Outcome: Rp. " + outcomeTotal
-                                                        statusView.text = "Status: " + String.format("%.1f", status) + "%"
+                                                        updateData(view, incomeTotal, outcomeTotal, calcStatus(incomeTotal, outcomeTotal))
                                                     }
                                                 }
                                             }
@@ -129,11 +117,13 @@ class HomeFragment : Fragment() {
         getNextTitle(view, api, user)
 
         rewardView.setOnClickListener{
-            if(lockedTitles[0] != null){
+            if(lockedTitles.isNotEmpty()){
                 if(user.user_balance >= lockedTitles[0].pointRequirement){
                     parentFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, BalanceFragment())
                         .commit()
                 }
+            } else{
+                Toast.makeText(requireContext(), "You've unlocked all the titles", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -186,6 +176,21 @@ class HomeFragment : Fragment() {
 
         percentView.text = String.format("%.1f", progress) + "% completed"
         progressBar.setProgress(progress.toInt())
+    }
+
+    private fun updateData(view: View, income: Int, outcome: Int, status: Float){
+        val incomeView = view.findViewById<TextView>(R.id.income)
+        val outcomeView = view.findViewById<TextView>(R.id.outcome)
+        val statusView = view.findViewById<TextView>(R.id.status)
+
+        incomeView.text = "Income: Rp. " + income
+        outcomeView.text = "Outcome: Rp. " + outcome
+        statusView.text = "Status: " + String.format("%.1f", status) + "%"
+    }
+
+    private fun calcStatus(income: Int, outcome: Int): Float {
+        val diff = (income - outcome).toFloat()
+        return (diff / income) * 100
     }
 
 

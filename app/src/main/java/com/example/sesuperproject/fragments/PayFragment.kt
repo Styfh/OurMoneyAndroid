@@ -52,14 +52,16 @@ class PayFragment : Fragment() {
                             .replace(R.id.fragmentContainerView, payDetailFragment)
                             .commit()
 
-                    } else if(response.code() == 404){
-                        Toast.makeText(requireActivity(), "Transaction does not exist", Toast.LENGTH_LONG).show()
+                    } else if(response.code() == 204){
+                        Toast.makeText(requireContext(), "Transaction does not exist", Toast.LENGTH_LONG).show()
+                    } else if(response.body()!!.payed == 1){
+                        Toast.makeText(requireContext(), "Transaction was already paid", Toast.LENGTH_LONG).show()
                     }
 
                 }
 
                 override fun onFailure(call: Call<TransactionHeader>, t: Throwable) {
-                    Toast.makeText(requireActivity(), t.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), t.message, Toast.LENGTH_LONG).show()
                 }
 
             })

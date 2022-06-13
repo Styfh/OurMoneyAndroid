@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,7 +52,7 @@ class BalanceFragment : Fragment() {
         updateEquippedTitle(view, retrofitInterface, user)
 
         unlockCardView.setOnClickListener{
-            if(lockedTitles[0] != null){
+            if(lockedTitles.isNotEmpty()){
                 if(user.user_balance >= lockedTitles[0].pointRequirement){
 
                     var param = HashMap<String, Int>()
@@ -67,6 +68,8 @@ class BalanceFragment : Fragment() {
                         }
                     }
                 }
+            } else{
+                Toast.makeText(requireContext(), "You already unlocked all the titles", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -90,6 +93,7 @@ class BalanceFragment : Fragment() {
     private fun updateEquippedTitle(view: View, retrofitInterface: RetrofitInterface, user: User){
         val titleView = view.findViewById<TextView>(R.id.header_userTitle)
         val nextTitleAmountView = view.findViewById<TextView>(R.id.nextTitleTarget)
+        val encouragementView = view.findViewById<TextView>(R.id.encouragement)
 
         GlobalScope.launch(Dispatchers.IO){
             val equippedTitleCall = retrofitInterface.getEquippedTitle(user.user_id).awaitResponse()
@@ -124,6 +128,8 @@ class BalanceFragment : Fragment() {
                             if(lockedTitles.isNotEmpty()){
                                 nextTitleAmountView.text = "Rp. " + lockedTitles[0].pointRequirement
                                 updateProgressBar(view, user)
+                            } else{
+                                encouragementView.text = "You're a shining star"
                             }
 
                         }

@@ -18,13 +18,13 @@
     <string name="status_label">Status:</string>
     <string name="progress_title">Progress:</string>
     <string name="encouragement">Get the Title!</string>
-    <string name="progress">% Completed</string>
+    <string name="progress">100% Completed</string>
 
     <string name="username">Username</string>
     <string name="balance_label">Balance:</string>
     <string name="balance">Balance amount</string>
     <string name="next_target_title">Next Target:</string>
-    <string name="next_target_amount">Next target amount</string>
+    <string name="next_target_amount">0</string>
 
     <string name="next_title_1">Next title 1</string>
     <string name="next_title_2">Next title 2</string>

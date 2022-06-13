@@ -24,6 +24,8 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="36dp"
         android:text="@string/payment_request_title"
+        android:textColor="#794C8E"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,6 +36,8 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="16dp"
         android:text="@string/payment_request_amount"
+        android:textColor="@color/black"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
@@ -51,10 +55,10 @@
         android:id="@+id/cardView"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="11dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView21">
+        app:layout_constraintTop_toTopOf="@+id/rectangle_2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="299dp"
@@ -66,12 +70,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/store"
+                android:textColor="@color/black"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ScrollView
-                android:id="@+id/scrollableItemList"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/itemList"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginStart="16dp"
@@ -79,15 +86,7 @@
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardStoreName">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/itemList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </ScrollView>
+                app:layout_constraintTop_toBottomOf="@id/cardStoreName" />
 
             <TextView
                 android:id="@+id/balanceAfter"
@@ -96,6 +95,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/balance_before"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/diff" />
 
@@ -106,6 +106,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/balance_diff"
+                android:textColor="#CB4767"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/currBalance" />
 
@@ -116,8 +117,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/balance_before_label"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/scrollableItemList" />
+                app:layout_constraintTop_toBottomOf="@+id/itemList" />
 
             <TextView
                 android:id="@+id/currBalance"
@@ -126,8 +128,9 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/balance_final"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/scrollableItemList" />
+                app:layout_constraintTop_toBottomOf="@+id/itemList" />
 
             <TextView
                 android:id="@+id/lblBalanceAfter"
@@ -137,6 +140,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="32dp"
                 android:text="@string/balance_after_label"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/diff" />
